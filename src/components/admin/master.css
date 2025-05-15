@@ -1,0 +1,476 @@
+.card-header{
+  background-color: antiquewhite;
+}
+
+label{
+  font-family:'Montserrat', sans-serif;
+  color:#0056b3;
+  font-weight: 600;
+  
+  }
+
+  .error-message {
+      color: #ff3860;
+      background: rgba(255, 56, 96, 0.1);
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 5px;
+      opacity: 0;
+      transform: translateY(-5px);
+      transition: all 0.3s ease-in-out;
+    }
+    .node-label {
+      width: 160px;
+      height: 60px;
+      background: white;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+      line-height: 60px;
+      border-top: 3px solid #2F80ED;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+    
+    .show-error {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    input.is-invalid,
+    .select-error {
+      border: 2px solid #ff3860 !important;
+      background: rgba(255, 56, 96, 0.1);
+    }
+    
+  
+    
+
+    .submit{
+      color: white !important;
+      padding: 9px 13px 9px 13px;
+      border-radius: 5px;
+      outline: 0;
+      border: 0;
+      text-transform: uppercase;
+      margin: 2px;
+      cursor: pointer;
+      font-weight: 500;
+      box-shadow: 0px 2px 2px lightgray;
+      transition: ease background-color 250ms;
+      background-color: #2e7d32!important;
+      border-color: #2e7d32!important;
+    }
+    .submit:disabled {
+      background-color: gray !important;
+      color: #ccc !important;
+      cursor: not-allowed !important; 
+      box-shadow: none !important; 
+    }     
+    
+    
+    .submit:hover{
+      background-color: #74a778!important;
+      border-color: #2e7d32!important;
+    }
+
+
+    .add{
+      padding: 9px 13px 9px 13px;
+      border-radius: 5px;
+      outline: 0;
+      border: 0;
+      color: #fff;
+      text-transform: uppercase;
+      margin: 2px;
+      cursor: pointer;
+      font-weight: 500;
+      box-shadow: 0px 2px 2px lightgray;
+      transition: ease background-color 250ms;
+      background-color: #1976d2!important;
+      border-color: #1976d2!important;
+         
+    }
+    
+    
+    .edit:hover{
+      background-color: rgb(255, 181, 44) !important;
+      border-color: rgb(255, 181, 44) !important;
+  
+    }
+  
+    .add:hover{
+      background-color: #3589dd!important;
+      border-color: #1976d2!important;
+    }
+    
+    
+    .edit{
+      color:black !important;
+      padding: 9px 13px 9px 13px;
+      border-radius: 5px;
+      outline: 0;
+      border: 0;
+      text-transform: uppercase;
+      margin: 2px ;
+      cursor: pointer;
+      font-weight: 500;
+      box-shadow: 0px 2px 2px lightgray;
+      transition: ease background-color 250ms;
+      background-color: rgb(255, 181, 44) !important;
+      border-color: rgb(255, 181, 44) !important;
+    }
+    .revise{
+      color:white !important;
+      padding: 9px 13px 9px 13px;
+      border-radius: 5px;
+      outline: 0;
+      border: 0;
+      text-transform: uppercase;
+      margin: 2px ;
+      cursor: pointer;
+      font-weight: 500;
+      box-shadow: 0px 2px 2px lightgray;
+      transition: ease background-color 250ms;
+      background-color: rgb(6 111 245 / 78%) !important;
+      border-color: rrgb(245, 161, 6) !important;
+    }
+  
+    .swal2-actions {
+      flex-direction: row-reverse !important;
+    }
+    
+    
+    
+    
+    
+  
+    .delete{
+      color: white;
+      padding: 9px 13px 9px 13px;
+      border-radius: 5px;
+      outline: 0;
+      border: 0;
+      text-transform: uppercase;
+      margin: 2px;
+      cursor: pointer;
+      font-weight: 500;
+      box-shadow: 0px 2px 2px lightgray;
+      transition: ease background-color 250ms;
+      background-color:rgb(236, 14, 14)!important;
+      border-color: rgb(236, 14, 14)!important;
+    }
+    
+    
+    .delete:hover{
+      background-color:#eb4559!important;
+      border-color: #dd2c00!important;
+    }
+
+    .back{
+      color: white !important;
+      padding: 9px 13px 9px 13px;
+      border-radius: 5px;
+      outline: 0;
+      border: 0;
+      text-transform: uppercase;
+      margin: 2px;
+      cursor: pointer;
+      font-weight: 500;
+      box-shadow: 0px 2px 2px lightgray;
+      transition: ease background-color 250ms;
+      background-color: #17a2b8 !important;
+      border-color: #17a2b8 !important;
+    }
+    
+    
+    .back:hover{
+      background-color: #6886c5;
+    }
+    /* General form container */
+.expert-form-container {
+  max-width: 95%;
+  margin: auto;
+  padding: 20px;
+}
+.mail-form-container {
+  max-width: 50%;
+  margin: auto;
+  padding: 20px;
+}
+/* .data-form-container {
+  max-width: 50%;
+  margin: auto;
+  padding: 20px;
+} */
+
+/* Form card styling */
+.form-card {
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.readonly{
+background-color: #e9ecef;
+}
+
+/* Header */
+.form-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+  
+}
+
+/* Labels */
+.form-group-project label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #0072ff;
+    text-align: left !important;
+    display: block;
+}
+
+/* Input fields */
+.form-control-project {
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 7px;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.form-control-project:focus {
+  border-color: #0072ff;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+.react-datepicker__month-select,
+.react-datepicker__year-select {
+  width: 100%; /* Ensure full width */
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 7px;
+/* Position the arrow */
+}
+
+.react-datepicker__month-select:focus,
+.react-datepicker__year-select:focus {
+  border-color: #007bff;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+.react-datepicker__header {
+  background-color: #007bff !important;
+}
+.react-datepicker__day-name {
+  color: #fff !important;
+  font-weight: 500 !important;
+}
+.react-datepicker__month-select option :hover {
+  background-color: #007bff !important;
+color:#fff;
+}
+.react-datepicker__day--selected{
+  background-color: #007bff !important;
+}
+
+.react-datepicker__year-dropdown-container--select > .react-datepicker__year-select option:hover {
+  background-color: #007bff !important;
+  color:#fff !important;
+}
+.react-datepicker__current-month{
+  color: #fff !important;
+}
+.react-datepicker-wrapper{
+  width: 100%;
+}
+.react-datepicker{
+
+  border: 1px solid #007bff !important;
+
+}
+
+.react-datepicker__month-container{
+  border-radius: 0px !important;
+}
+/* Custom select */
+.custom-select {
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* Error messages */
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 2px;
+}
+
+/* Buttons */
+.button-group {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btn-primary {
+  background: #007bff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  background: #545b62;
+}
+
+/* Responsive Grid */
+@media (max-width: 768px) {
+  .row > .col-md-4 {
+    margin-bottom: 15px;
+  }
+}
+
+
+.custom-navbar {
+  background: linear-gradient(90deg, #0E1C8F, #081A6E); /* Smooth gradient */
+  padding: 12px 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+}
+
+.navbar-brand {
+  font-size: 20px;
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+}
+
+.navbar-brand:hover {
+  color: #FFD700 !important; /* Gold hover effect */
+}
+
+.icon-home {
+  font-size: 22px;
+  color: #FFD700; /* Gold home icon */
+}
+
+.logo-text {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+#text-left{
+  text-align: left ;
+}
+
+.svg-chart-container{
+  height: 100%;
+}
+
+
+
+.node-button-foreign-object > div > div {
+  border: 1px solid #E4E2E9 !important;
+  border-radius: 3px !important;
+  /* padding: 3px; */
+  display: flex!important
+;
+  width: 100% !important;
+  font-size: 9px !important;
+   margin: 0px !important; 
+  background-color: white !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.node-button-foreign-object > div > div>div>span{
+  font-size: 16px !important;
+}
+
+.link {
+  stroke: gray !important; /* Red stroke */
+}
+
+#edit-node-root , #delete-node-root{
+  display: none;
+}
+
+
+.text-left{
+  text-align: left;
+}
+
+.trMain>td{
+  padding: 0px !important;
+  margin: 0px !important;
+  text-align: center !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  border: 1px solid black;
+}
+
+.Design{
+  border-top: 10px solid #D24545 !important;
+}
+
+.Realisation{
+  border-top:10px solid #E9B824 !important;
+}
+.Testing {
+  border-top:10px solid #0B60B0 !important;
+}
+.Ready {
+  border-top:10px solid green !important;
+}
+.In-House {
+  color: #FF8911 !important;
+}
+ .BTP {
+  color:#FDE767 !important;
+}
+.BTS {
+  color: #B67352 !important;
+}
+.COTS{
+  color: #492E87 !important;
+} 
+
+.Nocontent{
+  display: none !important;
+}
+
+
+

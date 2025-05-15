@@ -1,6 +1,6 @@
 import { Autocomplete, Box, createFilterOptions, Grid, ListItemText, Switch, TextField, Typography } from "@mui/material";
 import Datatable from "components/datatable/Datatable";
-import Navbar from "components/Navbar/Navbar";
+import Navbar from "components/navbar/Navbar";
 import { Field, Form, Formik } from "formik";
 import { useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";

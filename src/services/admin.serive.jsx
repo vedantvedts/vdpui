@@ -5,10 +5,9 @@ const API_URL = config.API_URL;
 const resetPsdLink = config.RESET_PASSWORD_LINK;
 
 export class UserManagerDto {
-  constructor(loginId, userName, divisionId, roleId, logintypeId, empId) {
+  constructor(loginId, userName,roleId, logintypeId, empId) {
     this.loginId = loginId;
     this.userName = userName;
-    this.divisionId = divisionId;
     this.roleId = roleId;
     this.logintypeId = logintypeId;
     this.empId = empId;
@@ -327,5 +326,39 @@ export const updateAuditPatch = async (formData) => {
       throw error;
   }
 };
+
+
+
+export const addProject = async(data) =>{
+    try {
+      const response = await axios.post(
+          `${API_URL}add-project-master`,
+           data,
+         { headers: authHeader() }
+          );
+    return response.data;
+    } catch (error) {
+        
+    }
+}
+export const updateProject = async(data) =>{
+    try {
+      
+        console.log(' data:', data);
+            const response = await axios.put(
+          `${API_URL}update-project-master`,
+           data,
+          { headers: authHeader() }
+          );
+    return response.data;
+    } catch (error) {
+        
+    }
+}
+
+
+
+
+
 
 

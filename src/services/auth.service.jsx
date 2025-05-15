@@ -20,10 +20,7 @@ export const login = async (username, password) => {
       const emp = await getEmpDetails(username);
       localStorage.setItem('roleId',emp.formRoleId)
       localStorage.setItem('roleName',emp.roleName)
-      localStorage.setItem('labCode',emp.labCode)
       localStorage.setItem('empId',emp.empId)
-      localStorage.setItem('divId',emp.divisionId)
-      localStorage.setItem('groupId',emp.groupId)
 
       await customAuditStampingLogin(username);
  
@@ -82,10 +79,8 @@ export const  getEmpDetails= async(username) => {
 //         const emp = await getEmpDetails(username);
 //         localStorage.setItem('roleId',emp.formRoleId)
 //         localStorage.setItem('roleName',emp.roleName)
-//         localStorage.setItem('labCode',emp.labCode)
 //         localStorage.setItem('empId',emp.empId)
-//         localStorage.setItem('divId',emp.divisionId)
-//         localStorage.setItem('groupId',emp.groupId)
+
   
 //         await customAuditStampingLogin(username);
    
@@ -174,7 +169,7 @@ export const customAuditStampingLogout = async (username, logoutType) => {
 
   export const openLoadingTab = ({ 
     message = 'Please wait...', 
-    spinnerColor = '#3498db', 
+    spinnerColor = '#00c6ff', 
   }) => {
     const newTab = window.open('', '_blank');
     if (!newTab) {
@@ -235,7 +230,91 @@ export const customAuditStampingLogout = async (username, logoutType) => {
         newTab.location.href = pdfUrl;
       }
     };
+
   };
+
+
+  
+
+export const openLoadingTabInSameTab = ({
+  message = 'Please wait...', 
+  spinnerColor = '#00c6ff', 
+}) => {
+  let spinnerPopup = null;
+
+   // Block user interactions and scroll
+   document.body.style.pointerEvents = 'none';  // Disable user interactions
+   document.body.style.overflow = 'hidden';  // Prevent scrolling
+
+   // Create a small popup with the spinner
+   spinnerPopup = document.createElement('div');
+   spinnerPopup.style.position = 'fixed';
+   spinnerPopup.style.top = '50%';
+   spinnerPopup.style.left = '50%';
+   spinnerPopup.style.transform = 'translate(-50%, -50%)';
+   spinnerPopup.style.width = '200px';
+   spinnerPopup.style.height = '200px';
+   spinnerPopup.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+   spinnerPopup.style.borderRadius = '10px';
+   spinnerPopup.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)';
+   spinnerPopup.style.zIndex = '9999'; // Ensure it overlays on top of content
+   spinnerPopup.style.display = 'flex';
+   spinnerPopup.style.flexDirection = 'column';
+   spinnerPopup.style.justifyContent = 'center';
+   spinnerPopup.style.alignItems = 'center';
+
+
+   // Spinner styling
+   const spinner = document.createElement('div');
+   spinner.classList.add('spinner');
+   spinner.style.border = `6px solid rgba(0, 0, 0, 0.1)`;
+   spinner.style.borderTop = `6px solid ${spinnerColor}`;
+   spinner.style.borderRadius = '50%';
+   spinner.style.width = '50px';
+   spinner.style.height = '50px';
+   spinner.style.animation = 'spin 1s linear infinite';
+
+   // Add spinner to the popup
+   spinnerPopup.appendChild(spinner);
+
+   // Loading message
+   const loadingMessage = document.createElement('p');
+   loadingMessage.style.marginTop = '20px';
+   loadingMessage.style.fontSize = '16px';
+   loadingMessage.style.color = 'black';
+   loadingMessage.style.padding = '20px';
+   loadingMessage.innerHTML = `<br>${message}`;
+   spinnerPopup.appendChild(loadingMessage);
+
+   // Append popup to body
+   document.body.appendChild(spinnerPopup);
+
+   // Add keyframes for spinning animation
+   const style = document.createElement('style');
+   style.innerHTML = `
+     @keyframes spin {
+       from { transform: rotate(0deg); }
+       to { transform: rotate(360deg); }
+     }
+   `;
+   document.head.appendChild(style);
+
+   return {
+    setContentInSameTab: () => {
+      // Just close the loading popup
+      document.body.removeChild(spinnerPopup);
+      document.body.style.pointerEvents = 'auto'; // Enable user interactions
+      document.body.style.overflow = 'auto'; // Allow scrolling
+    },
+  };
+};
+
+
+
+
+
+
+
   
   
 

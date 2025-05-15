@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { Box, Typography, Button,  Snackbar, Alert, IconButton, TextField, Grid, Autocomplete, InputLabel, Select, MenuItem, FormControl, ListItemText } from '@mui/material';
 import { Helmet } from "react-helmet";
 import withRouter from "../../common/with-router";
-import Navbar from "components/Navbar/Navbar";
+import Navbar from "components/navbar/Navbar";
 import { format } from "date-fns";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import Datatable from "components/datatable/Datatable";
@@ -14,9 +14,35 @@ import { getAllUserManualDocVersionDtoListByProject, getUserManualDocTransaction
 import AlertConfirmation from "common/AlertConfirmation.component";
 import UserManualDocAddIssueDialog from 'components/userManual/usermanual-add-isssue-dialog';
 import UserManualAddDocContentEditorComponent from 'components/userManual/usermanual-add-content-editor';
+import UserManualDocPrint from "./usermanual-doc-print";
+import { FaFileWord } from "react-icons/fa";
+import UserManualDocHtmlComponent from "./usermanual-doc-html";
 
 
 const UserManualDocRecordsComponent = ({props}) => {
+
+  
+      const wordConversion = (data) => {
+        const componentId = 'user-manual-document-html';
+      
+        let ComponentToRender = UserManualDocHtmlComponent;
+   
+        const container = document.createElement("div");
+        container.id = componentId;
+        document.body.appendChild(container);
+      
+        const root = ReactDOM.createRoot(container);
+        root.render(
+          <ComponentToRender
+            revisionElements={data}
+            printType={'word'}
+            id={componentId}
+            key={componentId}
+        
+          />
+        );
+      };
+      
 
   const [isReady,setIsReady] = useState(false);
 
@@ -28,6 +54,11 @@ const UserManualDocRecordsComponent = ({props}) => {
   const [initialValueOfProjectSel, setInitialValueOfProjectSel] = useState({
     projectId: props?.projectId || '',
 });
+
+    const getDocPDF = (versionElements) => {
+
+        return <UserManualDocPrint action='' revisionElements={versionElements} buttonType={'Button'} />;
+       }
 
 
 
@@ -293,9 +324,24 @@ const getMappedData = () => {
                      onClick={() => redirectToUserManualDocumentEditor(item)} 
                      >
                      <i className="material-icons edit-icon"  >edit_note</i>
-                </IconButton>
+                   </IconButton>
 
-                          {/* {getDocPDF(item.docType.split('-')[0], item)} */}
+                         {getDocPDF(item)} 
+
+                         <button
+                              style={{ background: "transparent",color: "blue", fontSize: "12px",cursor: "pointer",padding: "5px", border: "none",outline: "none" }}
+                              className="btn btn-outline-primary btn-sm me-0"
+                              onClick={() => wordConversion(item)}
+                              title="Word"
+                          >
+                          <i>
+                              <FaFileWord style={{ width: '20px', height: '20px', color: 'inherit',marginTop: '-5px' }} />
+                          </i>
+                          </button> 
+
+
+
+
                           {/* <IconButton style={{ color: '#9683EC', marginLeft: '1rem' }} onClick={() => {
                               setOpenDialog2(true);
                               setSingleDoc(item);
@@ -307,16 +353,7 @@ const getMappedData = () => {
                            {/* <IconButton className="distribution-icon mgl15 button-margin" onClick={() => openDocDist()} title="Distribution List" ><MdFeaturedPlayList /></IconButton> */}
                        
                      
-                          {/* <button
-                              style={{ background: "transparent",color: "blue", fontSize: "12px",cursor: "pointer",padding: "5px", border: "none",outline: "none" }}
-                              className="btn btn-outline-primary btn-sm me-0"
-                              onClick={() => wordConversion(item.docType.split("-")[0], item)}
-                              title="Word"
-                          >
-                          <i>
-                              <FaFileWord style={{ width: '20px', height: '20px', color: 'inherit',marginTop: '-5px' }} />
-                          </i>
-                          </button> */}
+                    
                  
                      
                 

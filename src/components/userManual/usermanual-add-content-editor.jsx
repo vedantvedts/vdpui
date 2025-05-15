@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState,useMemo } from 'react';
 import { Box, Breadcrumbs, Button, Grid, IconButton, Link, TextField, Tooltip, Typography, Container, Card, CardContent, Snackbar, Alert, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch, List, ListItem, ListItemText, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
-import Navbar from "components/Navbar/Navbar";
+import Navbar from "components/navbar/Navbar";
 import { Helmet } from 'react-helmet';
 import withRouter from "../../common/with-router";
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ import 'summernote/dist/summernote-lite.css';
 import 'summernote/dist/summernote-lite.js';
 import UserManualDocPrint from './usermanual-doc-print';
 import AddAbbreviationComponent from 'components/userManual/add-abbreviation-content';
+import UserManualDocTableComponent from 'components/userManual/usermanual-doc-table-content';
 
 const UserManualAddDocContentEditorComponent = (props)=>{
     
@@ -89,6 +90,11 @@ const UserManualAddDocContentEditorComponent = (props)=>{
        }
 
 
+    const addTableImageContent = () => {
+        setStatus('addTableContent');
+    };
+  
+
     useEffect(() => {
         window.$('#summernote').summernote({
             airMode: false,
@@ -146,29 +152,11 @@ const UserManualAddDocContentEditorComponent = (props)=>{
             codeviewFilter: true,
             codeviewFilterRegex: /<\/*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|ilayer|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|t(?:itle|extarea)|xml|.*onmouseover)[^>]*?>/gi,
             codeviewIframeFilter: true,
-            callbacks: {
-                // onBlur: (contents) => {
-                //     setEditorContent(contents);
-                // }
-                // onChange: (contents) => {
-                //     debouncedUpdate(contents);
-                // }
-
-                // onEnter: (contents) => {
-                //     // getSummernoteValue();
-                //     console.log('contents-----', contents)
-                // }
-
-                // onKeydown: function (e) {
-                //     if (e.key === 'Enter') {
-                //         e.preventDefault();
-                //     }
-                // }
-            }
+      
             
         });
 
-    
+         // Set content
         $('#summernote').summernote('code', editorContent);
 
         return () => {
@@ -681,9 +669,8 @@ const UserManualAddDocContentEditorComponent = (props)=>{
             return <AddAbbreviationComponent versionElements={versionElements}></AddAbbreviationComponent>;
             case 'list':
                 return <UserManualDocRecordsComponent  projectId={versionElements.projectId} ></UserManualDocRecordsComponent>;
-          case 'addContent':
-        return null;
-            // return <AddNewContentComponent versionElements={versionElements}></AddNewContentComponent>
+          case 'addTableContent':
+             return <UserManualDocTableComponent versionElements={versionElements}></UserManualDocTableComponent>
         default:
         return (
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', overflowX: 'hidden' }}>
@@ -708,6 +695,9 @@ const UserManualAddDocContentEditorComponent = (props)=>{
                   <Button className='topButtons' variant="contained" onClick={handleOpenAbbreviation}>Abbreviation<i className="material-icons" >text_fields</i></Button>
                   </Box> 
                   <Box className=" text-md-end mt-2 mt-md-0">
+                    <Button className="project-div" variant="contained">
+                          {versionElements.projectMasterDto?.projectName}
+                    </Button>
                   </Box>
                 </Box>
 
@@ -1197,16 +1187,16 @@ const UserManualAddDocContentEditorComponent = (props)=>{
                                    <FaInfoCircle className='animated-button' onClick={handleNoteOpen}/>
                             </div>
                             ) : '' }
-                            <div className="d-flex justify-content-center">
-                                <Button
+                             >*/}
+                               <div className="d-flex justify-content-center">
+                                  <Button
                                     variant="contained"
                                     sx={{background: 'palevioletred'}}
                                     className='me-1'
                                     onClick={() => addTableImageContent()}
                                 >
                                   Table / Figure Content
-                                </Button>*/}
-                               <div className="d-flex justify-content-center">
+                                </Button>
                                 {/* <Button onClick={handleRevokeSections} variant="contained" className="me-1">
                                    Revoke
                                 </Button>*/}

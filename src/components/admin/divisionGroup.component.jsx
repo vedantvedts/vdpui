@@ -1,6 +1,6 @@
 import withRouter from 'common/with-router';
 import Datatable from 'components/datatable/Datatable';
-import Navbar from 'components/Navbar/Navbar';
+import Navbar from 'components/navbar/Navbar';
 import React, { useEffect, useState } from 'react';
 import { getDivisionGroupMasterList } from 'services/admin.serive';
 

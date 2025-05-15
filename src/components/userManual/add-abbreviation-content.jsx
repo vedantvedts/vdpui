@@ -1,5 +1,5 @@
 import withRouter from "common/with-router";
-import Navbar from "components/Navbar/Navbar";
+import Navbar from "components/navbar/Navbar";
 import React, { useEffect, useState } from 'react';
 import './user-manual-add-doc-content.css';
 import { FaTrash } from "react-icons/fa";

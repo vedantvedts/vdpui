@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import withRouter from "../../common/with-router";
 import { getRolesList, getUserManagerList } from 'services/admin.serive';
-import Navbar from 'components/Navbar/Navbar';
+import Navbar from 'components/navbar/Navbar';
 import { Helmet } from 'react-helmet';
 import { Autocomplete, Box, Button, Grid, IconButton, ListItemText, TextField, Tooltip, Typography } from '@mui/material';
 import { CustomMenuItem } from 'services/auth.header';
