@@ -447,43 +447,45 @@ let docDefinition = {
     italics: false, 
     fontSize: 80 
   },
-
-background: function(currentPage, pageSize) {
+  background: function(currentPage, pageSize) {
   const backgroundElements = [];
 
-  // Apply blue background only on the first page
-  // if (currentPage === 1) {
-  //   backgroundElements.push({
-  //     image: blueBackground,
-  //     width: pageSize.width,
-  //     height: pageSize.height,
-  //     absolutePosition: { x: 0, y: 0 }
-  //   });
-  // }
+  // Common background elements (on all pages) - add border first
+  backgroundElements.push({
+    canvas: [
+      {
+        type: 'rect',
+        x: 20,
+        y: 20,
+        w: pageSize.width - 40,
+        h: pageSize.height - 80,
+        lineWidth: 1
+      }
+    ]
+  });
 
-  // Common background elements (on all pages)
-  backgroundElements.push(
-    {
+  // Add rotated text image on non-first pages
+  if (currentPage !== 1) {
+    backgroundElements.push({
       image: generateRotatedTextImage((DocTemplateAttributes[6] ?? '')),
       width: 100,
       absolutePosition: { x: -10, y: 50 }
-    },
-    {
-      canvas: [
-        {
-          type: 'rect',
-          x: 20,
-          y: 20,
-          w: pageSize.width - 40,
-          h: pageSize.height - 80,
-          lineWidth: 1
-        }
-      ]
-    }
-  );
+    });
+  }
+
+  // Apply blue background only on the first page
+  if (currentPage === 1) {
+    backgroundElements.push({
+      image: blueBackground,
+      width: pageSize.width - 40, // reduced by border's left+right padding (20+20)
+      height: pageSize.height - 80, // reduced by border's top+bottom padding
+      absolutePosition: { x: 20, y: 20 } // aligned with border's start position
+    });
+  }
 
   return backgroundElements;
 },
+
 
   content: [
     // First page content with enhanced styling
@@ -505,33 +507,29 @@ background: function(currentPage, pageSize) {
                       stack: [
                       // Double border effect
                       
-           {
-canvas: [
-    {
-      type: 'rect',
-      x: 19, 
-      y: 0,
-      w: 555.28, 
-      h: 15, 
-      color: '#0072ff',
-    },
+//            {
+// canvas: [
+//     {
+//       type: 'rect',
+//       x: 19, 
+//       y: 0,
+//       w: 555.28, 
+//       h: 15, 
+//       color: '#0072ff',
+//     },
     
-       {
-      type: 'rect',
-      x: 19,  
-      y: 18,
-      w: 555.28, 
-      h: 5,  
-      color: '#00c6ff',
-    },
-  ],
-    absolutePosition: { x: 1.5, y: 25 },
-
-
-                
-                      },
-                      
-                      // Main header with improved styling
+//        {
+//       type: 'rect',
+//       x: 19,  
+//       y: 18,
+//       w: 555.28, 
+//       h: 5,  
+//       color: '#00c6ff',
+//     },
+//   ],
+//     absolutePosition: { x: 1.5, y: 25 },
+//                       },
+// Main header with improved styling
                         { 
                           text: 'RESTRICTED', 
                           style: 'superheader',
@@ -657,30 +655,30 @@ canvas: [
   alignment: 'center'
 },
         
-        // Date with gradient accent
+     // Double border effect
         {
           stack: [
-      {
-  canvas: [
-    {
-      type: 'rect',
-      x: 19,
-      y: 0,
-      w: 555.28,
-      h: 5,
-      color: '#00c6ff',
-    },
-    {
-      type: 'rect',
-      x: 19,
-      y: 8,
-      w: 555.28,
-      h: 15,
-      color: '#0072ff',
-    }
-  ],
-  absolutePosition: { x: 1.5, y: 748 }  // Adjust if needed based on content height
-}
+//       {
+//   canvas: [
+//     {
+//       type: 'rect',
+//       x: 19,
+//       y: 0,
+//       w: 555.28,
+//       h: 5,
+//       color: '#00c6ff',
+//     },
+//     {
+//       type: 'rect',
+//       x: 19,
+//       y: 8,
+//       w: 555.28,
+//       h: 15,
+//       color: '#0072ff',
+//     }
+//   ],
+//   absolutePosition: { x: 1.5, y: 748 }  // Adjust if needed based on content height
+// }
           ],
           pageBreak: 'after'
         }
