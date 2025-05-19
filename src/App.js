@@ -1,7 +1,7 @@
 import './App.css';
 import 'core-js/stable'; // Polyfills for modern JavaScript features
 import 'regenerator-runtime/runtime'; // Polyfill for async/await functionality
-import Login from  './components/Login/login.component.jsx'
+import Login from  'components/login/login.component.jsx';
 import AuditStampingComponent from './components/admin/auditStamping.component.jsx';
 import { Routes, Route } from "react-router-dom";
 import Dashboard from './components/dashboard/dashboard.component';

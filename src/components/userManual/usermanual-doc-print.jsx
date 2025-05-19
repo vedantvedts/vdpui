@@ -5,13 +5,19 @@ import htmlToPdfmake from 'html-to-pdfmake';
 import { openLoadingTab } from 'services/auth.service';
 // import logoimage from '../../assets/images/logoimage.jpg';
 import vedtslogo from '../../assets/images/vedtsLogo.png';
+import backgroundImage from '../../assets/images/blueBackground.png';
 
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { getAllAbbreviations, getAllDocVersionDtoListByProject, getAllUserManualDocVersionDtoListByProject, getApprovedDocListByProject, getDocRevisionRecordById, getUserManualAllChapters } from 'services/usermanual.service';
+import { getAllAbbreviations, getAllDocVersionDtoListByProject, getAllUserManualDocVersionDtoListByProject, getApprovedDocListByProject, getDocRevisionRecordById, getDocTemplateAttributes, getUserManualAllChapters, getUserManualTableContentList } from 'services/usermanual.service';
 
 pdfMake.vfs = pdfFonts.vfs;
+
+
+
+
+
 
 const getBase64Image = async (url) => {
   const response = await fetch(url);
@@ -29,7 +35,8 @@ const getBase64Image = async (url) => {
 
 const UserManualDocPrint = ({action, revisionElements, buttonType }) => {
 
-  const [logoBase64, setLogoBase64] = useState('');
+      const [logoBase64, setLogoBase64] = useState('');
+      const [blueBackground, setBlueBackgound] = useState('');
 
     const [triggerEffect, setTriggerEffect] = useState(false);
     const [isReady, setIsReady] = useState(false);
@@ -39,20 +46,20 @@ const UserManualDocPrint = ({action, revisionElements, buttonType }) => {
     const [AllChaptersList, setAllChaptersList] = useState([]);
     const [DocVersionListByProject, setDocVersionListByProject] = useState([]);
     const [tableContentList, setTableContentList] = useState([]);
-    const [projectDocMainList,setProjectDocMainList] = useState([]);
-    const [projectDocAllList,setProjectDocAllList] = useState([]); 
     const [docAbbreviationsResponse, setDocAbbreviationsResponse] = useState([]);
     
 
-    var DocVersionRelease = [];
+
 
     useEffect(() => {
       // Convert the logo to base64 when component mounts
       const loadLogo = async () => {
         try {
           // Method 1: If using webpack/file-loader, the imported logo might already be a URL
-          const base64 = await getBase64Image(vedtslogo);
-          setLogoBase64(base64);
+          const logo = await getBase64Image(vedtslogo);
+          setLogoBase64(logo);
+             const background = await getBase64Image(backgroundImage);
+          setBlueBackgound(background);
         } catch (error) {
           console.error("Failed to load logo:", error);
         }
@@ -75,16 +82,16 @@ const UserManualDocPrint = ({action, revisionElements, buttonType }) => {
  
         getDocRevisionRecordById(revisionElements.docVersionReleaseId),
         getUserManualAllChapters(projectSelDto),
-        getAllUserManualDocVersionDtoListByProject(projectSelDto),
         getApprovedDocListByProject(projectSelDto),
+        getUserManualTableContentList(projectSelDto),
         getAllAbbreviations("0"),
-        // getUserManualDocsProjectDocList(projectSelDto.projectId),
+        getDocTemplateAttributes(),
 
-         //getAllAbbreviations("0"),
-        //getDocSummarybyId(revisionElements.docVersionReleaseId),
-        //getDocTemplateAttributes(),
+        
+        //getAllUserManualDocVersionDtoListByProject(projectSelDto),
 
-      ]).then(([revisionData, AllChaptersList,  DocTemplateAttributes, ApprovedVersionReleaseList, docAbbreviationsResponse]) => {
+
+      ]).then(([revisionData, AllChaptersList, ApprovedVersionReleaseList,tableContentList, docAbbreviationsResponse,   docTemplateAttributes,]) => {
           
          let abbreviationIds = revisionData.abbreviationIdNotReq ? revisionData.abbreviationIdNotReq.split(",").map(Number) : [0];
          let mainlist = docAbbreviationsResponse.filter((item) =>abbreviationIds.some((id) => id === item.abbreviationId))
@@ -92,14 +99,15 @@ const UserManualDocPrint = ({action, revisionElements, buttonType }) => {
                                           
 
           setAllChaptersList(AllChaptersList);
-          setDocTemplateAttributes(DocTemplateAttributes);
           setApprovedVersionReleaseList(ApprovedVersionReleaseList);
+          setTableContentList(tableContentList);  
           setDocAbbreviationsResponse(mainlist);
+          setDocTemplateAttributes(docTemplateAttributes);
  
+
           setIsReady(true);
-          //setProjectDocAllList(projectDocList);
-         // setProjectDocMainList(projectDocList.filter(obj => obj.levelId === 2));
-          //setDocDistEmpList(docDist);
+
+   
           setDocVersionListByProject(DocVersionListByProject);
         });
     
@@ -172,7 +180,7 @@ function generateRotatedTextImage(text) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   canvas.width = 200;
-  canvas.height = 1560;
+  canvas.height = 1360;
   ctx.font = '14px Roboto';
   ctx.fillStyle = 'rgba(128, 128, 128, 1)'; 
   ctx.translate(80, 1480); 
@@ -188,7 +196,7 @@ function generateRotatedTextImage(text) {
 
 
     const handlePdfGeneration = () => {
-        const todayMonth = today.toLocaleString('en-US', { month: 'short' }).substring(0, 3);
+      
         var allValues = [];
         let mainList = Array.isArray(AllChaptersList) 
         ? AllChaptersList.filter(chapter => chapter[1] === 0) 
@@ -355,36 +363,36 @@ function generateRotatedTextImage(text) {
         // ----------Document Abbreviation table end----------------
 
     //////////////////////////////////////////////////User Manual Doc Definition Start/////////////////////////////////////////////////////////////////////////
-         let docDefinition = {
-          info: {
-            title: "User Manual Print",
-          },
-          pageSize: 'A4',
-          pageOrientation: 'portrait',
-          pageMargins: [50, 50, 40, 40],
+let docDefinition = {
+  info: {
+    title: "User Manual Print",
+  },
+  pageSize: 'A4',
+  pageOrientation: 'portrait',
+  pageMargins: [50, 50, 40, 60],
+
     
           header: function (currentPage) {
             return {
-                stack: [
-                                    {
-                        columns: [
-                            {
-                                image: logoBase64,
-                                width: 30,
-                                height: 30,
-                                alignment: 'left',
-                                margin: [35, 10, 0, 10]
-                            },
-                            { text: 'RESTRICTED', style: 'headerrNote', margin: [0, 10, 0, 0] },
-                            {
-                                // Right: DRDO logo
-                                image: logoBase64,
-                                width: 30,
-                                height: 30,
-                                alignment: 'right',
-                                margin: [0, 10, 20, 10]
-                            }
-                        ]
+            stack: [{
+                    // columns: [
+                    //         {
+                    //             image: logoBase64,
+                    //             width: 30,
+                    //             height: 30,
+                    //             alignment: 'left',
+                    //             margin: [35, 10, 0, 10]
+                    //         },
+                    //         { text: 'RESTRICTED', style: 'headerrNote', margin: [0, 10, 0, 0] },
+                    //         {
+                    //             // Right: DRDO logo
+                    //             image: logoBase64,
+                    //             width: 30,
+                    //             height: 30,
+                    //             alignment: 'right',
+                    //             margin: [0, 10, 20, 10]
+                    //         }
+                    //     ]
                     },
                     
                 ]
@@ -393,7 +401,6 @@ function generateRotatedTextImage(text) {
           footer: function (currentPage, pageCount) {
             if (currentPage >= 2) {
               return {
-                // style: [alignment:''],
                 alignment: 'center',
                 margin: [0, 15, 0, 10],
                 stack: [{
@@ -421,7 +428,7 @@ function generateRotatedTextImage(text) {
                   columns: [
                   
                     {},
-                    { text: 'RESTRICTED', style: 'footerNote', },
+                    // { text: 'RESTRICTED', style: 'footerNote', },
                     {
                     },
                   ]
@@ -432,73 +439,269 @@ function generateRotatedTextImage(text) {
               };
             }
           },
-          // defaultStyle,
-    
-          watermark: { text: 'VEDTS', opacity: 0.1, bold: true, italics: false, fontSize: 80,  },
-          background: function (currentPage) {
-            return [
-              {
-                image: generateRotatedTextImage((DocTemplateAttributes[6] != undefined && DocTemplateAttributes[6] != null ? DocTemplateAttributes[6] : '' )),
-                width: 100, // Adjust as necessary for your content
-                absolutePosition: { x: -10, y: 50 }, // Position as needed
-              }
-            ];
-          },
-    
-          content: [
+
+  watermark: { 
+    text: 'VEDTS', 
+    opacity: 0.1, 
+    bold: true, 
+    italics: false, 
+    fontSize: 80 
+  },
+  background: function(currentPage, pageSize) {
+  const backgroundElements = [];
+
+  // Common background elements (on all pages) - add border first
+  backgroundElements.push({
+    canvas: [
+      {
+        type: 'rect',
+        x: 20,
+        y: 20,
+        w: pageSize.width - 40,
+        h: pageSize.height - 80,
+        lineWidth: 1
+      }
+    ]
+  });
+
+  // Add rotated text image on non-first pages
+  if (currentPage !== 1) {
+    backgroundElements.push({
+      image: generateRotatedTextImage((DocTemplateAttributes[6] ?? '')),
+      width: 100,
+      absolutePosition: { x: -10, y: 50 }
+    });
+  }
+
+  // Apply blue background only on the first page
+  if (currentPage === 1) {
+    backgroundElements.push({
+      image: blueBackground,
+      width: pageSize.width - 40, // reduced by border's left+right padding (20+20)
+      height: pageSize.height - 80, // reduced by border's top+bottom padding
+      absolutePosition: { x: 20, y: 20 } // aligned with border's start position
+    });
+  }
+
+  return backgroundElements;
+},
+
+
+  content: [
+    // First page content with enhanced styling
+    {
+      stack: [
+        // Restricted notice with gradient accent
+        {
+          columns: [
             {
-              columns: [
-                {
-                  style: 'tableExample',
-                  table: {
-                    widths: [255],
-                    body: [
-                      [
-                        {
-                          stack: [
-                            { text: 'RESTRICTED', style: 'superheader', },
-                            { text: 'The information given in this document is not to be published or communicated, either directly or indirectly, to the press or to any personnel not authorized to receive it.', style: 'normal' },
-                          ]
-                        }
-    
-                      ],]
-                  },
-    
-                },
-                // {
-                //   text: ':VEDTS: User Manual: \n ' + revisionElements.projectMasterDto.projectName + '', margin: [30, 0, 0, 0], bold: true,
-                // },
-              ]
-            },
-            {
-              text: 'User Manual for \n' + revisionElements.projectMasterDto.projectName, style: 'DocumentName', alignment: 'center',
-            },
-             {
-              image: logoBase64,
-              width: 95, height: 75,
-              alignment: 'center'
-            },
-            {
-              text: 'Vedant Tech Solutions', style: 'LabAdress', margin: [0, 75, 0, 5], alignment: 'center', fontSize: 15
-            },
-    
-            {
-              text: '#42, 2nd Floor, Sakkamma Tower 2, Near \n' + 'Maheshwaramma Temple Road, B Chikkanna \n'+ 'Layout, Mahadevapura, Bengaluru - 560048.', style: 'LabAdressPin', alignment: 'center',
-            },
-            {
-              text: todayMonth + '-' + today.getFullYear(), style: 'LabAdress', alignment: 'right', margin: [0, 200, 0, 0], pageBreak: 'after'
-            },
-            {
-              text: 'RECORD OF AMENDMENTS', bold: true, alignment: 'center', fontSize: 14, margin: [0, 10, 0, 10]
-            },
-            {
+              style: 'tableExample',
               table: {
-                headerRows: 2,
-                widths: ['auto', 'auto', 30, 30, 'auto', 'auto'],
-                body: DocVersionRelease
-              },
-              pageBreak: 'after'
-            },
+                widths: [255],
+                body: [
+                  [
+
+              
+                    
+                    {
+                      stack: [
+                      // Double border effect
+                      
+//            {
+// canvas: [
+//     {
+//       type: 'rect',
+//       x: 19, 
+//       y: 0,
+//       w: 555.28, 
+//       h: 15, 
+//       color: '#0072ff',
+//     },
+    
+//        {
+//       type: 'rect',
+//       x: 19,  
+//       y: 18,
+//       w: 555.28, 
+//       h: 5,  
+//       color: '#00c6ff',
+//     },
+//   ],
+//     absolutePosition: { x: 1.5, y: 25 },
+//                       },
+// Main header with improved styling
+                        { 
+                          text: 'RESTRICTED', 
+                          style: 'superheader',
+                          background: '#0072ff',
+                          color: 'white',
+                          margin: [0, 0, 0, 0]
+                        },
+                        { 
+                          text: 'The information given in this document is not to be published or communicated, either directly or indirectly, to the press or to any personnel not authorized to receive it.', 
+                          style: 'normal',
+                          margin: [0, 5, 0, 0]
+                        }
+                      ]
+                    }
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        
+        // Document title with gradient accent
+        { 
+          text: 'User Manual for\n' + revisionElements.projectMasterDto.projectName, 
+          style: 'DocumentName', 
+          alignment: 'center',
+          margin: [0, 20, 0, 25]
+        },
+        
+        // Logo with gradient border effect
+        {
+          stack: [
+            {
+              image: logoBase64,
+              width: 95,
+              height: 75,
+              alignment: 'center',
+              margin: [0, 5, 0, 5]
+            }
+          ],
+          alignment: 'center'
+        },
+        
+
+        // 1. Boxed company name + address block
+// 1. Boxed company name + address block (centered with blue border)
+{
+  style: 'LabAdressPin',
+  margin: [0, 10, 0, 0],
+  table: {
+    widths: ['*'],
+    body: [[
+      {
+        table: {
+          widths: ['*'],
+          body: [[
+            {
+              stack: [
+                {
+                  text: 'Vedant Tech Solutions',
+                  style: 'CompanyName',
+                  alignment: 'center',
+                  margin: [0, 10, 0, 5],
+                  color: '#0072ff'
+                },
+                {
+                  text: [
+                    '#42, 2nd Floor, Sakkamma Tower 2,\n',
+                    'Near Maheshwaramma Temple Road,\n',
+                    'B Chikkanna Layout, Mahadevapura,\n',
+                    'Bengaluru - 560048'
+                  ],
+                  alignment: 'center',
+                  margin: [0, 0, 0, 5]
+                }
+              ],
+              alignment: 'center',
+              margin: [5, 5, 5, 5]
+            }
+          ]]
+        },
+        // layout: {
+        //   hLineWidth: () => 1.5,
+        //   vLineWidth: () => 1.5,
+        //   hLineColor: () => '#00c6ff',
+        //   vLineColor: () => '#00c6ff',
+        //   paddingTop: () => 3,
+        //   paddingBottom: () => 3,
+        //   paddingLeft: () => 3,
+        //   paddingRight: () => 3,
+        //   marginLeft: () => 10,
+        //   marginRight: () => 10
+        // },
+        layout: 'noBorders',
+        alignment: 'center'
+      }
+    ]]
+  },
+  layout: 'noBorders'
+},
+// 2. Contact info below the box (with space above)
+{
+  text: [
+    { text: 'Website: ', bold: true },
+    {
+      text: 'www.vedts.com',
+      link: 'https://www.vedts.com/',
+      color: '#0072ff',
+      decoration: 'underline'
+    },
+    { text: '\u00A0\u00A0\u00A0' },
+    { text: 'Phone: ', bold: true },
+    { text: '080-41620330\n', color: '#0072ff' }
+  ],
+  alignment: 'center',
+  margin: [0, 10, 0, 0]  // adds a break after the address box
+},
+{
+  text: [
+    { text: 'Email: ', bold: true },
+    { text: 'vedantechsolutions@gmail.com', color: '#0072ff' }
+  ],
+  alignment: 'center'
+},
+        
+     // Double border effect
+        {
+          stack: [
+//       {
+//   canvas: [
+//     {
+//       type: 'rect',
+//       x: 19,
+//       y: 0,
+//       w: 555.28,
+//       h: 5,
+//       color: '#00c6ff',
+//     },
+//     {
+//       type: 'rect',
+//       x: 19,
+//       y: 8,
+//       w: 555.28,
+//       h: 15,
+//       color: '#0072ff',
+//     }
+//   ],
+//   absolutePosition: { x: 1.5, y: 748 }  // Adjust if needed based on content height
+// }
+          ],
+          pageBreak: 'after'
+        }
+      ]
+    },
+    
+          // {
+            //   text: todayMonth + '-' + today.getFullYear(), 
+            //   style: 'DateDetails', 
+            //   alignment: 'right', 
+            //   margin: [0, 200, 0, 0]
+            // },
+            // {
+            //   text: 'RECORD OF AMENDMENTS', bold: true, alignment: 'center', fontSize: 14, margin: [0, 10, 0, 10]
+            // },
+            // {
+            //   table: {
+            //     headerRows: 2,
+            //     widths: ['auto', 'auto', 30, 30, 'auto', 'auto'],
+            //     body: DocVersionRelease
+            //   },
+            //   pageBreak: 'after'
+            // },
             // {
             //   text: 'DISTRIBUTION LIST', bold: true, alignment: 'center', fontSize: 14, margin: [0, 10, 0, 10]
             // },
@@ -541,71 +744,131 @@ function generateRotatedTextImage(text) {
               },
               pageBreak: 'after'
             },
-          {
+          
+           {
           toc: {
             title: { text: 'TABLE OF CONTENTS', style: 'header', bold: true, alignment: 'center', fontSize: 14, margin: [0, 10, 0, 10],id: 'TOC_PAGE' },
             numberStyle: { bold: true },
           },
-          // pageBreak: 'after'
+
 
         },
-            //  {
-            //   text: 'TABLE OF TABLES',
-            //   style: 'header',
-            //   bold: true,
-            //   alignment: 'center',
-            //   fontSize: 14,
-            //   margin: [0, 10, 0, 10],
-            //   pageBreak: 'before' 
-            // },
-            // {
-            //   table: {
-            //     headerRows: 1,
-            //     widths: ['10%', '35%', '40%', '15%'],
-            //     body: [
-            //       [{ text: 'S.No', bold: true }, { text: 'Table Name', bold: true }, { text: 'Table Description', bold: true }, { text: 'Page No.', bold: true }]
-            //     ].concat(
-            //        tableContentList.filter(data => data.contentType === 'T')
-            //        .map((table, index) => [
-            //         { text: index + 1 }, 
-            //         { text: table.contentName, linkToPage: table.contentPageNo, color: 'blue' },
-            //         { text: table.contentDescription, linkToPage: table.contentPageNo },
-            //         { text: table.contentPageNo, linkToPage: table.contentPageNo }
-            //       ])
-            //     )
-            //   },
-            //   layout: 'lightHorizontalLines'
-            // },
-            // {
-            //   text: 'TABLE OF FIGURES',
-            //   style: 'header',
-            //   bold: true,
-            //   alignment: 'center',
-            //   fontSize: 14,
-            //   margin: [0, 10, 0, 10],
-            //   pageBreak: 'before' 
-            // },
-            // {
-            //   table: {
-            //     headerRows: 1,
-            //     widths: ['10%', '35%', '40%', '15%'],
-            //     body: [
-            //       [{ text: 'S.No', bold: true }, { text: 'Figure Name', bold: true }, { text: 'Figure Description', bold: true }, { text: 'Page No.', bold: true }]
-            //     ].concat(
-            //        tableContentList.filter(data => data.contentType === 'F')
-            //        .map((table, index) => [
-            //         { text: index + 1 }, 
-            //         { text: table.contentName, linkToPage: table.contentPageNo, color: 'blue' },
-            //         { text: table.contentDescription, linkToPage: table.contentPageNo },
-            //         { text: table.contentPageNo, linkToPage: table.contentPageNo }
-            //       ])
-            //     )
-            //   },
-            //   layout: 'lightHorizontalLines'
-            // },
+             {
+              text: 'TABLE OF TABLES',
+              style: 'header',
+              bold: true,
+              alignment: 'center',
+              fontSize: 14,
+              margin: [0, 10, 0, 10],
+              pageBreak: 'before' 
+            },
+            {
+              table: {
+                headerRows: 1,
+                widths: ['10%', '35%', '40%', '15%'],
+                body: [
+                  [{ text: 'S.No', bold: true }, { text: 'Table Name', bold: true }, { text: 'Table Description', bold: true }, { text: 'Page No.', bold: true }]
+                ].concat(
+                   tableContentList.filter(data => data.contentType === 'T')
+                   .map((table, index) => [
+                    { text: index + 1 }, 
+                    { text: table.contentName, linkToPage: table.contentPageNo, color: 'blue' },
+                    { text: table.contentDescription, linkToPage: table.contentPageNo },
+                    { text: table.contentPageNo, linkToPage: table.contentPageNo }
+                  ])
+                )
+              },
+              layout: 'lightHorizontalLines'
+            },
+            {
+              text: 'TABLE OF FIGURES',
+              style: 'header',
+              bold: true,
+              alignment: 'center',
+              fontSize: 14,
+              margin: [0, 10, 0, 10],
+              pageBreak: 'before' 
+            },
+            {
+              table: {
+                headerRows: 1,
+                widths: ['10%', '35%', '40%', '15%'],
+                body: [
+                  [{ text: 'S.No', bold: true }, { text: 'Figure Name', bold: true }, { text: 'Figure Description', bold: true }, { text: 'Page No.', bold: true }]
+                ].concat(
+                   tableContentList.filter(data => data.contentType === 'F')
+                   .map((table, index) => [
+                    { text: index + 1 }, 
+                    { text: table.contentName, linkToPage: table.contentPageNo, color: 'blue' },
+                    { text: table.contentDescription, linkToPage: table.contentPageNo },
+                    { text: table.contentPageNo, linkToPage: table.contentPageNo }
+                  ])
+                )
+              },
+              layout: 'lightHorizontalLines'
+            },
             allValues,
             
-           
+             // Add a "Thank You" page as the last page
+    {
+      text: 'Thank You',
+      pageBreak: 'before',
+      alignment: 'center',
+      fontSize: 46,
+      bold: true,
+      margin: [0, 200, 0, 30], // centers vertically
+      pageOrientation: 'portrait', // optional
+        color: '#0072ff'
+    },
+      {
+              stack: [
+                {
+                  text: 'Vedant Tech Solutions',
+                  style: 'CompanyName',
+                  alignment: 'center',
+                  margin: [0, 10, 0, 5],
+                  color: '#0072ff'
+                },
+                {
+                  text: [
+                    '#42, 2nd Floor, Sakkamma Tower 2,\n',
+                    'Near Maheshwaramma Temple Road,\n',
+                    'B Chikkanna Layout, Mahadevapura,\n',
+                    'Bengaluru - 560048'
+                  ],
+                  alignment: 'center',
+                  margin: [0, 0, 0, 5]
+                }
+              ],
+              alignment: 'center',
+              margin: [5, 5, 5, 5]
+            },
+            {
+  text: [
+    { text: 'Website: ', bold: true },
+    {
+      text: 'www.vedts.com',
+      link: 'https://www.vedts.com/',
+      color: '#0072ff',
+      decoration: 'underline'
+    },
+    { text: '\u00A0\u00A0\u00A0' },
+    { text: 'Phone: ', bold: true },
+    { text: '080-41620330\n', color: '#0072ff' }
+  ],
+  alignment: 'center',
+  margin: [0, 10, 0, 0]  // adds a break after the address box
+},
+{
+  text: [
+    { text: 'Email: ', bold: true },
+    { text: 'vedantechsolutions@gmail.com', color: '#0072ff' }
+  ],
+  alignment: 'center'
+},
+       
+
+    
    
   
               ],
@@ -634,8 +897,8 @@ function generateRotatedTextImage(text) {
     
             },
             DocumentName: {
-                fontSize: 18,
-                margin: [0, 30, 0, 35],
+                fontSize: 24,
+                margin: [0, 20, 0, 25],
                 bold: true,
                 color: '#1660B2'
             },
@@ -651,7 +914,13 @@ function generateRotatedTextImage(text) {
                 bold: true,
                 color: '#1660B2'
             },
-            LabAdress: {
+            CompanyName: {
+                margin: [0, 30, 0, 0],
+                width: [150],
+                fontSize: 20,
+                bold: true,
+            },
+            DateDetails: {
                 margin: [0, 30, 0, 0],
                 width: [150],
                 fontSize: 12,
@@ -728,10 +997,8 @@ function generateRotatedTextImage(text) {
             },
             footertext: {
                 fontSize: 7,
-            },
-            appendixContent : {
-              fontSize: DocTemplateAttributes[4],
-            },
+            }
+           
         },
     
     

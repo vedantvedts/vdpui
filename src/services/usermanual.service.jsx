@@ -264,3 +264,49 @@ export const updateNotReqAbbreviationIds = async (qaqtDocAbbreviations, DocVersi
         throw error;
     }
 }
+
+
+export const getUserManualTableContentList = async (qaqtDocTypeAndProjectDto) => {
+    try {
+        return (await axios.post(`${API_URL}get-table-content-list`, qaqtDocTypeAndProjectDto, { headers: { 'Content-Type': 'application/json', ...authHeader() } })).data;
+    } catch (error) {
+        console.error('Error occurred in getUserManualTableContentList', error);
+    }
+}
+
+export const getUserManualTableContentById = async (contentId) => {
+    try {
+        return (await axios.post(`${API_URL}get-table-content-by-id`, contentId, { headers: { 'Content-Type': 'application/json', ...authHeader() } })).data;
+    } catch (error) {
+        console.error('Error occurred in getUserManualTableContentById', error);
+    }
+}
+
+
+export const updateUserManualTableContent = async (docContentDto) => {
+    try {
+        return (await axios.post(`${API_URL}update-user-manual-table-content`, docContentDto, { headers: { 'Content-Type': 'application/json', ...authHeader() } })).data;
+    } catch (error) {
+        console.error('Error occurred in updateUserManualTableContent', error);
+    }
+}
+
+
+export const addUserManualTableContent = async (docContentDto) => {
+    try {
+        return (await axios.post(`${API_URL}add-user-manual-table-content`, docContentDto, { headers: { 'Content-Type': 'application/json', ...authHeader() } })).data;
+    } catch (error) {
+        console.error('Error occurred in addUserManualTableContent', error);
+    }
+}
+
+
+
+export const getDocTemplateAttributes = async () => {
+    try {
+        return (await axios.post(`${API_URL}get-doc-template-attributes`, null, { headers: { 'Content-Type': 'application/json', ...authHeader() } })).data;
+    } catch (error) {
+        console.error('Error occurred in getDocTemplateAttributes', error);
+        throw error;
+    }
+}

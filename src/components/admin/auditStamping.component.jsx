@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import Navbar from "../Navbar/Navbar";
+import Navbar from "../navbar/Navbar";
 import dayjs from 'dayjs';
 import {
   Autocomplete,

@@ -1,13 +1,18 @@
 import withRouter from 'common/with-router';
 import Datatable from 'components/datatable/Datatable';
-import Navbar from 'components/Navbar/Navbar';
+import Navbar from 'components/navbar/Navbar';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { getProjectMasterList } from 'services/admin.serive';
+import ProjectAddEdit from './project.add.edit.component';
+import { Link } from 'react-router-dom';
+import { FaEdit } from 'react-icons/fa';
 
 const ProjectMaster = ({ router }) => {
 
 const [projectDetailsList, setProjectDetailsList] = useState([]);
+const [status, setStatus] = useState('list');
+const[projectMasterData,setprojectMasterData]= useState('');
 
 useEffect(() => {
     fetchProjectMasterList();
@@ -26,10 +31,11 @@ const columns = [
     { name: 'SN', selector: (row) => row.sn, sortable: true, grow: 1, align: 'text-center' },
     { name: 'Project Code', selector: (row) => row.prjCode, sortable: true, grow: 2, align: 'text-center' },
     { name: 'Project Name', selector: (row) => row.prjName, sortable: true, grow: 2, align: 'text-left' }, 
-    { name: 'PDC', selector: (row) => row.pdc, sortable: true, grow: 2 , align: 'text-center'},
-    { name: 'Project Director', selector: (row) => row.prjDirName, sortable: true, grow: 2 , align: 'text-left'},
+    { name: 'Project Short Name', selector: (row) => row.prjShortName, sortable: true, grow: 2 , align: 'text-center'},
     { name: 'Description', selector: (row) => row.prjDescription, sortable: true, grow: 2 , align: 'text-left'},
+    { name: "Action", selector: (row) => row.action, sortable: true, align: 'text-center', }, 
 ];
+
 
 const mappedData = (list) => {
     setProjectDetailsList(
@@ -37,14 +43,36 @@ const mappedData = (list) => {
             sn: index + 1,
             prjCode: item.projectCode || '-',
             prjName: item.projectName || '-',
-            pdc: format(new Date(item.pdc), 'dd-MM-yyyy')   || '-',
-            prjDirName:  item.prjDirectorName+', '+item.prjDirectorDesig || '-', 
+            prjShortName: item.projectShortName || '-',
             prjDescription: item.projectDescription || '-',
+            action: (
+                          <>
+                           <button className=" btn btn-warning btn-sm me-1"  title="Edit" onClick={()=>edit(item)}> 
+                            <FaEdit/>
+                           </button>
+                           </>
+                        ),
         }))
     );
 };
 
-    return (
+       const addProjectMaster = () =>{
+                setStatus('add');
+            }
+
+       const edit =(item)=>{
+              setprojectMasterData(item)
+              setStatus('edit')
+      }
+
+
+   switch (status) {
+                case 'add':
+                  return <ProjectAddEdit mode={'add'}></ProjectAddEdit>;
+                case 'edit':
+                  return <ProjectAddEdit mode={'edit'} projectMasterData={projectMasterData}></ProjectAddEdit>;
+                default:
+                return (
         <div>
           <Navbar></Navbar>
           <div className="card">
@@ -53,10 +81,15 @@ const mappedData = (list) => {
                     <div id="card-body customized-card">
                         {<Datatable columns={columns} data={projectDetailsList} />}
                     </div>
+                      <div align="center" >
+            <button className="mt-2 btn add" onClick={() => addProjectMaster()}> ADD</button>
+        
+          </div>
                 </div>
             </div>
        </div>
-    )
+    );
 }
+    }
 
 export default withRouter(ProjectMaster);

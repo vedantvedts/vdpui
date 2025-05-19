@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../Navbar/Navbar";
+import Navbar from "../navbar/Navbar";
 import "./dashboard.css";
 import { Autocomplete, TextField, Box, ListItemText, Typography } from '@mui/material';
 import { CustomMenuItem } from 'services/auth.header';
