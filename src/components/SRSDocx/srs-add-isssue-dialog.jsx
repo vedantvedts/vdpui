@@ -43,9 +43,10 @@ const SRSDocAddIssueDialog = ({ open, onClose, versionElements,projectId,onConfi
             }
         }
 
-
+        if(open){
         fetchData();
         setDataSRSAddedTemplates();
+        }
     }, [open]);
 
 

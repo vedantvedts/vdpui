@@ -739,16 +739,20 @@ let docDefinition = {
             //   },
             //   pageBreak: 'after'
             // },
+           ...(docAbbreviations.length > 1?
+          [
             {
               text: 'LIST OF ABBREVIATIONS', bold: true, alignment: 'center', fontSize: 14, margin: [0, 10, 0, 10]
             },
+            
             {
               table: {
                 widths: [30, 120, 320],
                 body: docAbbreviations
               },
               pageBreak: 'after'
-            },
+            }
+          ]:[] ),
           
            {
           toc: {

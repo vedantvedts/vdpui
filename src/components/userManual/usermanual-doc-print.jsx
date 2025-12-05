@@ -809,6 +809,8 @@ let docDefinition = {
             //   },
             //   pageBreak: 'after'
             // },
+             ...(docAbbreviations.length > 1?
+          [
             {
               text: 'LIST OF ABBREVIATIONS', bold: true, alignment: 'center', fontSize: 14, margin: [0, 10, 0, 10]
             },
@@ -818,7 +820,8 @@ let docDefinition = {
                 body: docAbbreviations
               },
               pageBreak: 'after'
-            },
+            }
+          ]:[]),
           
            {
           toc: {

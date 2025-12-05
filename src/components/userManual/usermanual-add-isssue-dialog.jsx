@@ -45,8 +45,10 @@ const UserManualDocAddIssueDialog = ({ open, onClose, versionElements,projectId,
         }
 
 
-        fetchData();
-         setDataAddedTemplates();
+          if(open){
+              setDataAddedTemplates();
+               fetchData();
+              }
   
   
   

@@ -296,7 +296,7 @@ useEffect(() => {
         from: index + 1 < userManualDocVersionListByProject.length ? 'V' + userManualDocVersionListByProject[index + 1].versionNo + '-R' + userManualDocVersionListByProject[index + 1].releaseNo : '--',
         to: 'V' + item.versionNo + '-R' + item.releaseNo || '-',
         issueDate: format(new Date(item.issueDate), 'dd-MM-yyyy') || '-',
-        status: <Box className={statusColor} onClick={() => openTran(item)}  ><Box className='status'>{item.statusName}<i class="material-icons float-right font-med">open_in_new</i></Box></Box> || '-',
+        status: <Box className={statusColor} onClick={() => openTran(item)}  ><Box className='status'>{item.statusName}<i className="material-icons float-right font-med">open_in_new</i></Box></Box> || '-',
         action: (
           <Grid>
             {/* Edit button: Only for INITIATION or RETURN */}
