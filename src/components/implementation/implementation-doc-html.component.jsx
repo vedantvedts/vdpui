@@ -73,9 +73,10 @@ const ImplementationDocHtmlComponent = ({ id,printType, revisionElements}) => {
         
        const fetchData = async () => {
           try {
-       
+          
   const projectSelDto = {
               projectId: revisionElements.projectId,
+                docversionReleaseId:revisionElements.docVersionReleaseId
                 };
         
             Promise.all([
@@ -308,6 +309,7 @@ htmlContent += `
 let tocHtml = '<div style="text-align: left;">';
 
 // Main level TOC
+
 let mainListForTOC = AllChaptersList.filter(chapter => chapter[1] === 0);
 
 for (let i = 0; i < mainListForTOC.length; i++) {

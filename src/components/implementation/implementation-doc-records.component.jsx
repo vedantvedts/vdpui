@@ -20,7 +20,7 @@ import ImplAddContentEditorComponent from "./impl-add-content-editor.component";
 const ImplementationDocRecordsComponent = ({ props }) => {
 
   const wordConversion = (data) => {
-    const componentId = 'user-manual-document-html';
+    const componentId = 'implementation-doc-html';
     let ComponentToRender = ImplementationDocHtmlComponent;
     const container = document.createElement("div");
     container.id = componentId;

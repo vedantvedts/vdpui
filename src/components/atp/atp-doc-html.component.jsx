@@ -75,6 +75,7 @@ const AtpDocHtmlComponent = ({ id,printType, revisionElements}) => {
        
   const projectSelDto = {
               projectId: revisionElements.projectId,
+              docversionReleaseId:revisionElements.docVersionReleaseId
                 };
         
             Promise.all([

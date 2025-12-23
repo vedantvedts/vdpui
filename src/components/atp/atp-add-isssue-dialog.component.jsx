@@ -43,10 +43,11 @@ const AtpDocAddIssueDialog = ({ open, onClose, versionElements,projectId,onConfi
                 setError('An error occurred');
             }
         }
-
-
-        fetchData();
+        
+        if(open){
+          fetchData();
          setDataSRSAddedTemplates();
+        }
     }, [open]);
 
 
