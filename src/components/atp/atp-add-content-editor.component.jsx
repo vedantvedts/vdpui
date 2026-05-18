@@ -1,13 +1,10 @@
 import React, { useCallback, useEffect, useState,useMemo } from 'react';
-import { Box, Breadcrumbs, Button, Grid, IconButton, Link, TextField, Tooltip, Typography, Container, Card, CardContent, Snackbar, Alert, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch, List, ListItem, ListItemText, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
+import { Box, Breadcrumbs, Button, Grid, IconButton, Link, TextField, Tooltip, Typography, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch, List, ListItem, ListItemText, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
 import Navbar from "components/navbar/Navbar";
 import { Helmet } from 'react-helmet';
 import withRouter from "../../common/with-router";
-
 import './atp-manual-add-doc-content.css';
-
 import $ from 'jquery';
-import { deleteChapterByChapterId  } from 'services/usermanual.service';
 import AlertConfirmation from "common/AlertConfirmation.component";
 import { MdAccountTree } from "react-icons/md";
 import AtpDocsAddDocContentAddSectionDialog from './atp-add-content-section-dialog.component';
@@ -310,6 +307,7 @@ const AtpAddContentEditorComponent = (props) => {
                 chapterName.push(editChapterId)
                 chapterName.push(editChapterForm.editChapterName)
                 let res = await updateAtpChapterNameById(chapterName);
+
                 if (res && res > 0) {
                     if (levelForEditChapter > 0) {
                         if (levelForEditChapter === 1) {
@@ -319,7 +317,7 @@ const AtpAddContentEditorComponent = (props) => {
                         }
                         getSubChapters(refreshChapterId, levelForEditChapter);
                     } else {
-                        getAllChapters(projectSelDto,true,versionElementId.docVersionReleaseId);
+                        getAllChapters(projectSelDto,true,versionReleaseDto);
                     }
 
                     Swal.fire({
