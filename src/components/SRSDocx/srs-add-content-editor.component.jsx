@@ -320,7 +320,7 @@ const SrsAddContentEditor = (props) => {
                         }
                         getSubChapters(refreshChapterId, levelForEditChapter);
                     } else {
-                        getAllChapters(projectSelDto,true,versionElementId.docVersionReleaseId);
+                        getAllChapters(projectSelDto,true,versionReleaseDto);
                     }
 
                     Swal.fire({

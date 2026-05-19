@@ -1,3 +1,4 @@
+import { Box, Button } from '@mui/material';
 import withRouter from 'common/with-router';
 import Datatable from 'components/datatable/Datatable';
 import Navbar from 'components/navbar/Navbar';
@@ -15,7 +16,7 @@ useEffect(() => {
 const fetchEmployeeetailsList = async () => {
     try {
         const employeeDetails = await getEmployeeMasterList();
-        console.log("employee List @@@@"+JSON.stringify(employeeDetails))
+       // console.log("employee List @@@@"+JSON.stringify(employeeDetails))
         mappedData(employeeDetails);
     } catch (error) {
         console.error("An error occured");
@@ -56,9 +57,19 @@ const mappedData = (list) => {
                     <div id="card-body customized-card">
                         {<Datatable columns={columns} data={employeeDetailsList} />}
                     </div>
+                 <Box className="add-button-wrapper" align="center" >
+                    <Button variant="contained" sx={{ marginLeft: '8px!important' }}  color="primary" >
+                          Add</Button>
+                 </Box> 
+               
                 </div>
             </div>
+
+
+             
         </div>
+
+        
     )
 }
 
